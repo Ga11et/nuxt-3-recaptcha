@@ -1,6 +1,6 @@
 {
   "name": "nuxt-3-recaptcha-v2",
-  "version": "0.1.6",
+  "version": "0.2.1",
   "description": "Nuxt 3 Recaptcha v2 module",
   "license": "MIT",
   "type": "module",
