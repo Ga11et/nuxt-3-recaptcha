@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://github.com/Ga11et/nuxt-3-recaptcha/compare/v0.1.4...v0.1.5)
+
 ## v0.1.4
 
 [compare changes](https://github.com/Ga11et/nuxt-3-recaptcha/compare/v0.1.3...v0.1.4)
