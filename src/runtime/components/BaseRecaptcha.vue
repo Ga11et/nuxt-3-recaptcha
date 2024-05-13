@@ -4,6 +4,7 @@
 
 <script setup>
 import { useRuntimeConfig } from 'nuxt/app'
+import { ref } from '#imports'
 
 const props = defineProps({
   modelValue: {
