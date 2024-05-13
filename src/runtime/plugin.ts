@@ -1,5 +1,16 @@
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin, useHead, useRuntimeConfig } from "nuxt/app";
 
-export default defineNuxtPlugin((_nuxtApp) => {
-  console.log('Plugin injected by my-module!')
-})
+export default defineNuxtPlugin((nuxtApp) => {
+  const config = useRuntimeConfig().public.recaptcha;
+
+  useHead({
+    script: [
+      {
+        key: "google-recaptcha",
+        src: `https://www.google.com/recaptcha/api.js?hl=${config.lang}`,
+        async: true,
+        defer: true,
+      },
+    ],
+  });
+});

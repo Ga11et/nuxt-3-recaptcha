@@ -1,19 +1,64 @@
-import { defineNuxtModule, addPlugin, createResolver } from '@nuxt/kit'
+import {
+  defineNuxtModule,
+  addPlugin,
+  createResolver,
+  useLogger,
+  addComponent,
+} from "@nuxt/kit";
 
-// Module options TypeScript interface definition
-export interface ModuleOptions {}
+export interface ModuleOptions {
+  siteKey: string;
+  secretKey: string;
+  lang: string;
+}
+export interface PublicRuntimeConfigOptions {
+  siteKey: string;
+  lang: string;
+}
+export interface RuntimeConfigOptions {
+  secretKey: string;
+}
+
+const PACKAGE_NAME = "nuxt-3-recaptcha";
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'my-module',
-    configKey: 'myModule',
+    name: PACKAGE_NAME,
+    configKey: "recaptcha",
   },
-  // Default configuration options of the Nuxt module
-  defaults: {},
-  setup(_options, _nuxt) {
-    const resolver = createResolver(import.meta.url)
+  defaults: {
+    siteKey: "",
+    secretKey: "",
+    lang: "ru",
+  },
+  setup(options, nuxt) {
+    const logger = useLogger(PACKAGE_NAME);
+    logger.info(`${PACKAGE_NAME} setup starting`);
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
-    addPlugin(resolver.resolve('./runtime/plugin'))
+    const { resolve } = createResolver(import.meta.url);
+
+    nuxt.options.runtimeConfig = nuxt.options.runtimeConfig || { public: {} };
+    nuxt.options.runtimeConfig.public.recaptcha = {
+      siteKey: options.siteKey,
+      lang: options.lang,
+    };
+    nuxt.options.runtimeConfig.recaptcha = { secretKey: options.secretKey };
+
+    addPlugin(resolve("./runtime/plugin"));
+    addComponent({
+      name: "BaseRecaptcha",
+      filePath: resolve("./runtime/components/BaseRecaptcha.vue"),
+    });
+
+    logger.success(`${PACKAGE_NAME} setup done`);
   },
-})
+});
+
+declare module "@nuxt/schema" {
+  interface PublicRuntimeConfig {
+    recaptcha: PublicRuntimeConfigOptions;
+  }
+  interface RuntimeConfig {
+    recaptcha: RuntimeConfigOptions;
+  }
+}
