@@ -4,61 +4,61 @@ import {
   createResolver,
   useLogger,
   addComponent,
-} from "@nuxt/kit";
+} from '@nuxt/kit'
 
 export interface ModuleOptions {
-  siteKey: string;
-  secretKey: string;
-  lang: string;
+  siteKey: string
+  secretKey: string
+  lang: string
 }
 export interface PublicRuntimeConfigOptions {
-  siteKey: string;
-  lang: string;
+  siteKey: string
+  lang: string
 }
 export interface RuntimeConfigOptions {
-  secretKey: string;
+  secretKey: string
 }
 
-const PACKAGE_NAME = "nuxt-3-recaptcha";
+const PACKAGE_NAME = 'nuxt-3-recaptcha'
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: PACKAGE_NAME,
-    configKey: "recaptcha",
+    configKey: 'recaptcha',
   },
   defaults: {
-    siteKey: "",
-    secretKey: "",
-    lang: "ru",
+    siteKey: '',
+    secretKey: '',
+    lang: 'ru',
   },
   setup(options, nuxt) {
-    const logger = useLogger(PACKAGE_NAME);
-    logger.info(`${PACKAGE_NAME} setup starting`);
+    const logger = useLogger(PACKAGE_NAME)
+    logger.info(`${PACKAGE_NAME} setup starting`)
 
-    const { resolve } = createResolver(import.meta.url);
+    const { resolve } = createResolver(import.meta.url)
 
-    nuxt.options.runtimeConfig = nuxt.options.runtimeConfig || { public: {} };
+    nuxt.options.runtimeConfig = nuxt.options.runtimeConfig || { public: {} }
     nuxt.options.runtimeConfig.public.recaptcha = {
       siteKey: options.siteKey,
       lang: options.lang,
-    };
-    nuxt.options.runtimeConfig.recaptcha = { secretKey: options.secretKey };
+    }
+    nuxt.options.runtimeConfig.recaptcha = { secretKey: options.secretKey }
 
-    addPlugin(resolve("./runtime/plugin"));
+    addPlugin(resolve('./runtime/plugin'))
     addComponent({
-      name: "BaseRecaptcha",
-      filePath: resolve("./runtime/components/BaseRecaptcha.vue"),
-    });
+      name: 'BaseRecaptcha',
+      filePath: resolve('./runtime/components/BaseRecaptcha.vue'),
+    })
 
-    logger.success(`${PACKAGE_NAME} setup done`);
+    logger.success(`${PACKAGE_NAME} setup done`)
   },
-});
+})
 
-declare module "@nuxt/schema" {
+declare module '@nuxt/schema' {
   interface PublicRuntimeConfig {
-    recaptcha: PublicRuntimeConfigOptions;
+    recaptcha: PublicRuntimeConfigOptions
   }
   interface RuntimeConfig {
-    recaptcha: RuntimeConfigOptions;
+    recaptcha: RuntimeConfigOptions
   }
 }

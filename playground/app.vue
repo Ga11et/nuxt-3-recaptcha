@@ -7,57 +7,66 @@
 
       <BaseRecaptcha v-model="formData.token" />
 
-      <button @click.prevent="verifyHandler" class="form__submit">
+      <button
+        class="form__submit"
+        @click.prevent="verifyHandler"
+      >
         Верифицировать
       </button>
 
-      <pre v-if="errors['recaptcha']" class="form__pre">{{
+      <pre
+        v-if="errors['recaptcha']"
+        class="form__pre"
+      >{{
         errors["recaptcha"]
       }}</pre>
 
-      <pre v-if="success" class="form__pre">{{ success }}</pre>
+      <pre
+        v-if="success"
+        class="form__pre"
+      >{{ success }}</pre>
     </form>
   </div>
 </template>
 
 <script setup>
 const formData = reactive({
-  token: "",
-});
-const errors = reactive({});
-const success = ref("");
+  token: '',
+})
+const errors = reactive({})
+const success = ref('')
 
 const verifyHandler = () => {
   for (const key in errors) {
-    delete errors[key];
+    errors[key] = ''
   }
-  success.value = "";
+  success.value = ''
 
   if (!formData.token) {
-    errors.recaptcha = "Введите токен";
-    return;
+    errors.recaptcha = 'Введите токен'
+    return
   }
 
-  $fetch("/api/check-recaptcha", {
-    method: "POST",
+  $fetch('/api/check-recaptcha', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: {
       recaptcha: formData.token,
     },
   })
-    .then((r) => {
-      formData.token = "";
-      success.value = "Успех";
+    .then(() => {
+      formData.token = ''
+      success.value = 'Успех'
     })
     .catch((e) => {
       for (const key in e.data.data) {
-        errors[key] = e.data.data[key];
+        errors[key] = e.data.data[key]
       }
-      formData.token = "";
-    });
-};
+      formData.token = ''
+    })
+}
 </script>
 
 <style scoped>
