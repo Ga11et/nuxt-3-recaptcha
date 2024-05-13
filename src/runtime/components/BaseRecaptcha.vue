@@ -4,7 +4,7 @@
 
 <script setup>
 import { useRuntimeConfig } from 'nuxt/app'
-import { ref } from '#imports'
+import { ref, onMounted, watch } from '#imports'
 
 const props = defineProps({
   modelValue: {
