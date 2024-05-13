@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { useRuntimeConfig, ref, onMounted, watch } from '#app'
+import { useRuntimeConfig, ref, onMounted, watch } from 'nuxt/app'
 
 const props = defineProps({
   modelValue: {
